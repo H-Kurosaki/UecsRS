@@ -1,0 +1,67 @@
+UECS Packet Transceiver - Quick Guide
+Overview
+This device displays the direct content of UDP communications between nodes used in UECS.
+It also allows you to send text input directly to each node and receive responses.
+Usage Precautions
+When using only the receiving function, there is minimal risk.
+However, when using the transmitting function, misuse can cause confusion in UECS operations and lead to malfunctions.
+Please use this in an environment where malfunctions have been anticipated in advance.
+The user assumes all responsibility for any damages that may occur from using this software.
+Note that it cannot be run simultaneously with applications that have similar functions (such as UECS monitoring software).
+Receiving Function
+Displays the raw data of packets transmitted between UECS nodes, with line breaks removed.
+　
+Packet Filtering
+
+Restrict receive IP:
+Will not display packets coming from IPs other than specified.
+
+Ignore IP:
+Displays packets from all IPs except the specified one.
+
+Receive specified string:
+Only displays packets containing the specified string.
+Responds to any partial match in the received string, not limited to CCM.
+
+Ignore specified string:
+Does not display packets containing the specified string.
+Responds to partial matches, but be careful as setting it to blank will stop all reception.
+
+Output to logfile:
+Outputs received packet contents to receive.txt.
+Data is appended to the file.
+
+Reception rate:
+Number of CCMs received per second.
+Displayed regardless of filter settings.
+Stop reception on each port:
+Configure whether to receive on each of the three ports used by UECS.
+
+Note: Setting the maximum log lines to 0 will prevent logs from being deleted, but this state is not suitable for long-term operation.
+Transmission Function
+Directly sends the content written in the transmission text to the network.
+
+Destination:
+When set, sends only to the specified IP.
+
+Broadcast:
+Sends the transmission text to all nodes within the same subnet.
+
+Send once:
+Sends at the moment the button is pressed.
+
+Send every second:
+Continuously emits the transmission text at 1-second intervals.
+
+Specify send port:
+Depending on the content of the transmission text, it may not respond if not sent to the correct port.
+Generally divided by purpose as follows:
+
+Measurement data and device internal information transmission:
+Data port 16520
+
+CCM source search:
+Query port 16521
+
+Network node search:
+Scan port 16529

@@ -1,0 +1,191 @@
+UECSパケット送受信機　簡易説明書
+
+◎概要
+UECSで用いられるノード間のUDP通信の内容を直接表示します。
+また、各ノードに対して入力した文章を直接送信して応答を得ることができます。
+
+◎使用上の注意
+受信機能のみ使用する場合はリスクはほとんどありませんが、
+送信機能を使用する場合、誤用するとUECSの動作を混乱させ誤作動の原因になります。
+あらかじめ、誤作動を想定した環境で使用してください。
+本ソフトウェアを使用することによって損害が発生した場合の責任は使用者にあるものとします。
+なお、同様の機能を持つアプリケーション(UECSのモニターソフトなど)と多重起動はできません。
+
+◎受信機能
+UECSノード間で送受信されるパケットの生データを表示します、改行コードは除去されます。
+　
+・パケットのフィルタ
+　指定IPのみ受信：
+	指定したIP以外から来るパケットを表示しません。
+　指定IPを無視：
+	指定したIP以外から来るパケットを表示します。
+　指定CCMのみ受信：
+	指定した文字列を含むパケット以外を表示しません。
+	CCMに限らず受信文字列のうち一部でも一致すれば反応します。
+　指定CCMを無視：
+	指定した文字列を含むパケット表示しません。
+	一部が一致しても反応しますが、空白にすると何も受信しなくなるので注意。
+
+　ログのファイル出力：
+	receive.txtに受信したパケットの内容を出力します。
+	データは追記されます。
+　受信速度：
+	1秒間のCCM受信数
+	フィルタ等とは関係なく表示されます
+
+　各ポートの受信停止：
+	UECSに使用される3つのポートをそれぞれ受信するかどうか設定します
+
+※最大Log行数を０にするとログが消されなくなりますが、この状態は長期動作に向きません
+
+
+◎送信機能
+送信文に書かれた内容をネットワークにに直接送信します
+ 送信先指定：
+	設定すると指定したIPのみに送ります
+ ブロードキャスト:
+	送信文を同一サブネット内のノード全てに送信します
+ １回送信：
+	ボタンを押したタイミングで送信します
+ 自動送信：
+	送信文を１秒間隔で発信し続けます
+
+　送信ポート：
+	送信文の内容によっては正しいポートに送信しないと応答しません
+	おおむね次のように用途別に分けられています
+	・計測データや機器の内部情報の送受信
+		データポート16520
+
+	・CCMの発信源サーチ
+		問い合わせポート16521
+
+	・ネットワーク内のノードの検索
+		スキャンポート16529
+
+
+◎UECS送信例文(EOLUS Version.0.90a以降)
+UECSで使用されるパケットの各種例文とCCM通信仕様の簡易説明書
+
+■■■センサー等の測定値■■■
+気象観測ノードなどが常に発信している値
+これらを利用してPCに擬似的な気象ノードの役割を与えることができる
+※room/region/orderの値は受信先に合わせて設定すること
+
+○気温25度
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="InAirTemp" room="1" region="1" order="1" priority="10">25.0</DATA></UECS>
+
+○湿度30%
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="InAirHumid" room="1" region="1" order="1" priority="10">30</DATA></UECS>
+
+○風速50m
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="WWindSpeed" room="0" region="0" order="0" priority="10">50</DATA></UECS>
+
+○日射量0.25Kw/㎡
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="WRadiation" region="0" order="0" priority="10">0.25</DATA></UECS>
+
+■■■強制動作命令■■■
+※room/region/orderの値に0を指定するとワイルドカードを示し、その範囲の全ての機器に無条件で到達する
+　例:
+　room="0" region="0" order="0"	LAN内の全ての機器
+　room="1" region="0" order="0"	room=1以下の全ての機器
+　room="1" region="2" order="0"	room=1/region=2以下の全ての機器
+
+○全ての天窓を開ける
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="WinManOrder" room="0" region="0" order="0" priority="10">100</DATA></UECS>
+
+○全ての天窓を閉める
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="WinManOrder" room="0" region="0" order="0" priority="10">101</DATA></UECS>
+
+○全ての暖房機の送風ファンを起動する
+送信先:Broadcast	Port:16520	送信頻度:1秒間隔で連続
+<?xml version="1.0"?><UECS><DATA type="AHFanManOrder" room="0" region="0" order="0" priority="10">1</DATA></UECS>
+
+■■■CCMの送信要求■■■
+ノードに特定の情報を強制的に送信させる
+※EOLUS Version.0.90aではCCM送信要求にワイルドカードは使用できない
+　従って、対象ノードのroom/region/order値は厳密に指定する必要がある
+
+○room="1" region="2" order="5"に該当するAHFanSts(暖房機のファンの状態)を送信させる
+送信先:Broadcast	Port:16520	送信頻度:1回
+<?xml version="1.0"?><UECS><REQUEST type="AHFanSts" room="1" region="2" order="5"></UECS>
+
+○room="1" region="2" order="2"に該当するWinError(天窓のエラー状況)を送信させる
+送信先:Broadcast	Port:16520	送信頻度:1回
+<?xml version="1.0"?><UECS><REQUEST type="WinError" room="1" region="2" order="2"></UECS>
+
+■■■ノードの検索■■■
+※いずれも送受信にスキャンポート16529を使用する
+※データポートを受信停止すると応答がよくわかります
+
+○LAN内の全ノードをリストアップ
+送信先:Broadcast	Port:16529	送信頻度:1回
+<?xml version="1.0"?><UECS><NODESCAN></NODESCAN></UECS>
+
+○LAN内の全ノードの保有するエレメントをスキャン
+送信先:Broadcast	Port:16529	送信頻度:1回
+<?xml version="1.0"?><UECS><ELEMENTSCAN page="1"></UECS>
+
+　※データ量が多く1回で受信しきれない場合は
+　<?xml version="1.0"?><UECS><ELEMENTSCAN page="1"></UECS>
+　<?xml version="1.0"?><UECS><ELEMENTSCAN page="2"></UECS>
+　<?xml version="1.0"?><UECS><ELEMENTSCAN page="3"></UECS>
+　などpageの値を変えて順次送信する
+
+○LAN内の全ノードの保有するCCMをスキャン
+送信先:Broadcast	Port:16529	送信頻度:1回
+<?xml version="1.0"?><UECS><CCMSCAN page="1"></UECS>
+　※データ量が多く1回で受信しきれない場合は前述した方法で取得する
+
+■■■CCM発信源サーチ■■■
+指定したCCMを送信可能なノードのIPアドレスを得る
+※いずれも送受信に問い合わせポート16521を使用する
+※A-??クラスの送信頻度を持つCCMはサーチできない
+
+○Dateの発信元を得る
+送信先:Broadcast	Port:16521	送信頻度:1回
+<?xml version="1.0"?><UECS><SEARCH type="Date" room="1" region="1" order="1"></UECS>
+
+○暖房機の点火指令を送るノードを得る
+送信先:Broadcast	Port:16521	送信頻度:1回
+<?xml version="1.0"?><UECS><SEARCH type="AHBurnerManOrder" room="0" region="0" order="0"></UECS>
+
+
+◎簡易CCM辞書(EOLUS Version.0.90a相当)
+
+WAirTemp	s_short	℃	外気温	温室外の気温
+WRainfall	s_short	-	降雨状態	0:降雨なし/1:降雨
+WRadiation	s_short	Kw/㎡	日射	温室外の日射
+WWindDir16	s_short	-	風向	1:北/5:東/9:南/13:西(時計回り)
+WWindSpeed	s_short	m	風速	温室外の風速
+AHError	us_long	-	暖房機異常通知	暖房機のエラーコード
+CrtnError	s_chr	-	カーテン異常通知	遮光カーテンのエラーコード
+WinError	s_chr	-	天窓異常通知	天窓のエラーコード
+AHInAirTemp	s_short	℃	暖房機気温	暖房機付属の気温計
+AHOrderTemp	s_short	℃	暖房機設定温度	暖房が開始される温度
+AHRefTemp	s_short	℃	暖房機参照温度	暖房機が参照している温度
+CrtnDegree	s_short	％	カーテン開度	0:閉/100:全開
+WinDegree	s_short	％	天窓開度	0:閉/100:全開
+AHBurnerManOrder	s_chr	-	暖房機手動動作指令	暖房機の遠隔操作コマンド
+AHBurnerSts	s_chr	-	暖房機燃焼状況	0:停止中/1:動作中
+AHFanManOrder	s_chr	-	暖房機送風手動動作指令	暖房機の遠隔操作コマンド
+AHFanSts	s_chr	-	暖房機送風動作状況	0:停止中/1:動作中
+AHVentiPrhbOrder	s_chr	-	暖房による換気扇禁止指令	-
+AHBurnerPrhbOrder	s_chr	-	暖房機燃焼禁止指令	-
+AHFanPrhbOrder	s_chr	-	暖房機送風禁止指令	-
+CrtnManOrder	s_chr	-	カーテン手動動作指令	カーテンの遠隔操作コマンド
+CrtnAutoOrder	s_chr	-	CrtnAutoOrder	-
+CrtnOpenTime	s_short	-	カーテン開放時間	カーテンを開放する時間設定
+CrtnCloseTime	s_short	-	カーテン閉鎖時間	カーテンを閉鎖する時間設定
+CrtnOutSts	s_chr	-	カーテン状況	カーテンの動作状態
+Date	s_short	-	日付	時計補正用の日付
+Time	s_short	-	時刻	時計補正用の時刻
+WinManOrder	s_short	-	天窓手動動作指令	-
+WinOutSts	s_chr	-	天窓状況	天窓の動作状態
+WinRainLmt	s_short	-	天窓雨天動作制限	-
+WinUserLmt	s_short	％	天窓開度制限	-
