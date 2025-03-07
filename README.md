@@ -48,7 +48,7 @@ LAN内に接続されたUECSノードに応答を求めます
 特定のCCMを持つノードを探索します。
 探索CCM欄に探したいCCMのtypeを入力してください。
 
-注意：UARDECSはスキャンコマンドには対応していません
+注意：UARDECSはスキャンコマンドには対応していません(UARDECS_MEGA,UARDECS_PICOは対応済み)
 
 ●CCM受信速度のカウント
 Ver2.2以降からは１分あたりのパケットの流通量を表示できるようになりました。
@@ -106,6 +106,8 @@ Ask the UECS node connected in the LAN to respond.
 · CCM scan
 Request a list of CCMs that the node can send out.
 If it over the packet size limit, it may be divided into multiple pages, so please specify the page number.
+
+Note: UARDECS does not support scan commands (UARDECS_MEGA and UARDECS_PICO already support these)
 
 · CCM sender search
 Search nodes with a specific CCM.
