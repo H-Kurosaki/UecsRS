@@ -1,4 +1,51 @@
 # UecsRS
+昔作ったUECS用パケットの表示と送信を行えるWindows用ツールのソースコードです。
+
+このリポジトリのフォルダ構成
+
+bin/  コンパイル済みのWindows用実行ファイルです(簡易マニュアル付き)
+
+普通に使うだけならbinフォルダのファイルをダウンロードして使うだけで問題なく使えます
+
+SrcCode-Japanese/  日本語版のソースコードです
+
+SrcCode-English/  英語版のソースコードです
+
+ソースコードはBorland C++ Builder 6というかなり古い開発環境を使用しています。
+
+現在では入手困難なモジュールを使用しているため開発環境の再構築は難しいと思われますが、
+
+このツールは使われることが多かったため、公開することにします。
+
+(作者は2024年現在でもWindows7でこの開発環境を維持していますがいつまで保つか分かりません)
+
+# ライセンス
+
+これまで明確なライセンスを付与していませんでしたが、MITライセンスとします。
+
+Copyright © 2019 Kurosaki Hideto
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+# 説明書
 
 ##################################################
 
