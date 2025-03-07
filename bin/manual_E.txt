@@ -1,0 +1,55 @@
+﻿######################################################
+UECS Packet sending and receiving support tool Ver2.2E
+2019.8.9 Kurosaki Hideto
+######################################################
+
+●Operating environment
+This software has already been confirmed with Windows 2000, Windows XP, Windows 7, Windows 8.1, Windows 10.
+In Windows XP or later, you may be warned about using the network the first time you start up, so please allow communication.
+Since this software conflicts with software with same kinds of UDP communication function, it can not start at the same time.
+
+●UDP reception
+This software can display the status of UDP communication used by UECS and display the character string received from the 16520, 16521, 16529 port.
+
+Broadcast packets can be received even if the subnet does not match.
+Therefore, if a UECS node connected to the PC is running, some character string will be displayed.
+(Please be aware that http communication can not be accessed unless subnets are matched)
+Broadcast packets and packets other than sent to the IP address of the PC can not be received.
+Note: The maximum packet reception speed handled by this tool is up to 200 packets per second.
+
+●UDP transmission
+UDP transmission of the character string written in the "Send string to UDP" field.
+You can select broadcast or unicast.
+When you press the "send once" button, it will be sent only once.
+When you press the "send every second" button, it will be sent automatically at 1 second intervals.
+
+If there are multiple LAN ports on the PC, broadcasting will only be done on one LAN port with the highest priority.
+If the packet does not arrive at the UECS node under such conditions, please perform to specify IP address and unicast transmission.
+(If you want to broadcast to the intended LAN port, please unplug the other LAN ports)
+
+●Send scaning command
+Three kinds of commands can be sent.
+· Node scan
+Ask the UECS node connected in the LAN to respond.
+
+· CCM scan
+Request a list of CCMs that the node can send out.
+If it over the packet size limit, it may be divided into multiple pages, so please specify the page number.
+
+· CCM sender search
+Search nodes with a specific CCM.
+Please enter the CCM type you want to search in the request CCM column.
+
+● Counting CCM traffic
+From Ver2.2 onwards, you can display the packet traffic per minute.
+It takes more than one minute for the value to be displayed after starting the software.
+When measuring the traffic over 12000 packet / min, the display speed of the PC cannot keep up.
+If you want to measure the packet flow rate of 12000 packets / min or more, check "Stop data port(UDP16520)" and stop the display.
+Even if the display is stopped, only the packet distribution volume can be measured.
+
+
+●"Output log to file" option
+When this item is checked, a file called "receive.txt" is generated in the folder containing the executable file of this tool, and the received character string is written out sequentially.
+
+●Notes
+The developer of this tool is not responsible for any outcome caused by the use of this tool by the user.
